@@ -29,7 +29,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
 
-
       // Perform action when user is near a saved location
       showDialog(
         context: context,
@@ -119,14 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('My Home Page'),
+          title: Text('Personal Assistant'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 child: TextField(
                   controller: _placeController,
                   decoration: InputDecoration(
@@ -140,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: _getLatLongFromPlace,
                 child: const Text('Add the place to your list'),
+
               ),
               const SizedBox(height: 20),
               Text('My Current Latitude: ${lat ?? 'Loading...'}'),
@@ -150,30 +150,38 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   itemCount: _savedLocations.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(_savedLocations[index]['placeName']),
-                      subtitle: Text(
-                        'Lat: ${double.parse(_savedLocations[index]['latitude']).toStringAsFixed(2)}, Long: ${double.parse(_savedLocations[index]['longitude']).toStringAsFixed(2)}',
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Distance: ${double.parse(_savedLocations[index]['distance'].toString()).toStringAsFixed(2)} meters',
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.close, color: Colors.red,),
-                            onPressed: () {
-                              setState(() {
-                                _savedLocations.removeAt(index);
-                              });
-                            },
-                          ),
-                        ],
+                    return Card(
+                      elevation: 4,
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: ListTile(
+                        title: Text(_savedLocations[index]['placeName']),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Latitude: ${double.parse(_savedLocations[index]['latitude']).toStringAsFixed(2)}',
+                            ),
+                            Text(
+                              'Longitude: ${double.parse(_savedLocations[index]['longitude']).toStringAsFixed(2)}',
+                            ),
+                            Text(
+                              'Distance: ${double.parse(_savedLocations[index]['distance'].toString()).toStringAsFixed(2)} meters',
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.close, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              _savedLocations.removeAt(index);
+                            });
+                          },
+                        ),
                       ),
                     );
                   },
                 ),
+
               ),
             ],
           ),
